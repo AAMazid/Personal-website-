@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Md. Ashraful Alam Mazid — Identity</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --c-bg: #0d0d0d;
+      --c-paper: #f5f0e8;
+      --c-orange: #ff5c1a;
+      --c-yellow: #f9e835;
+      --c-teal: #00c8aa;
+      --c-pink: #ff3d8b;
+      --c-blue: #1a8cff;
+      --c-purple: #c34bff;
+      --font-display: 'Bebas Neue', sans-serif;
+      --font-body: 'DM Sans', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--c-bg);
+      color: var(--c-paper);
+      font-family: var(--font-body);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* Custom cursor */
+    .cursor {
+      width: 16px; height: 16px;
+      background: var(--c-yellow);
+      border-radius: 50%;
+      position: fixed;
+      top: 0; left: 0;
+      pointer-events: none;
+      z-index: 9999;
+      mix-blend-mode: difference;
+      transition: transform 0.15s ease;
+    }
+    .cursor.grow { transform: scale(3); }
+
+    /* Grain overlay */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 9000;
+      opacity: 0.35;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 60px 48px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--c-teal);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .hero-name {
+      font-family: var(--font-display);
+      font-size: clamp(80px, 12vw, 160px);
+      line-height: 0.9;
+      letter-spacing: 0.01em;
+      color: var(--c-paper);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.5s forwards;
+    }
+
+    .hero-name span {
+      display: block;
+      -webkit-text-stroke: 2px var(--c-paper);
+      color: transparent;
+    }
+
+    .hero-tagline {
+      margin-top: 32px;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.7;
+      max-width: 340px;
+      color: rgba(245,240,232,0.65);
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.7s forwards;
+    }
+
+    .hero-tagline strong {
+      color: var(--c-orange);
+      font-weight: 500;
+    }
+
+    .hero-cta {
+      margin-top: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s ease 0.9s forwards;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 14px 32px;
+      background: var(--c-yellow);
+      color: #0d0d0d;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      border: none;
+      cursor: none;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .btn:hover { background: var(--c-orange); color: #fff; transform: translateY(-2px); }
+
+    .hero-right {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* Big animated color blobs */
+    .blob-wrap {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(60px);
+      opacity: 0.55;
+      animation: blobFloat 8s ease-in-out infinite alternate;
+    }
+
+    .blob-1 { width: 420px; height: 420px; background: var(--c-pink); top: -80px; right: -60px; animation-delay: 0s; }
+    .blob-2 { width: 300px; height: 300px; background: var(--c-blue); bottom: 40px; right: 100px; animation-delay: -3s; }
+    .blob-3 { width: 260px; height: 260px; background: var(--c-purple); top: 40%; left: -30px; animation-delay: -5s; }
+    .blob-4 { width: 180px; height: 180px; background: var(--c-teal); bottom: -20px; left: 20px; animation-delay: -2s; }
+
+    @keyframes blobFloat {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(20px, -30px) scale(1.06); }
+    }
+
+    /* Avatar placeholder */
+    .avatar-ring {
+      position: relative;
+      z-index: 2;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 3px solid var(--c-yellow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      animation: popIn 0.8s cubic-bezier(0.175,0.885,0.32,1.275) 1.1s forwards;
+    }
+
+    .avatar-inner {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-orange), var(--c-pink));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-size: 72px;
+      letter-spacing: 0.05em;
+      color: #fff;
+    }
+
+    /* Floating tags around avatar */
+    .float-tag {
+      position: absolute;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      z-index: 3;
+      opacity: 0;
+      animation: fadeIn 0.6s ease forwards;
+    }
+
+    .ft-1 { top: 18%; left: 5%; background: var(--c-yellow); color: #0d0d0d; animation-delay: 1.4s; transform: rotate(-4deg); }
+    .ft-2 { bottom: 18%; right: 5%; background: var(--c-teal); color: #0d0d0d; animation-delay: 1.6s; transform: rotate(3deg); }
+    .ft-3 { top: 55%; left: 2%; background: var(--c-orange); color: #fff; animation-delay: 1.8s; transform: rotate(-2deg); }
+
+    /* ── ABOUT SECTION ── */
+    .about {
+      padding: 120px 80px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--c-teal);
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      transform: rotate(180deg);
+      align-self: start;
+      padding-top: 8px;
+    }
+
+    .about-content {}
+
+    .about-heading {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 0.95;
+      margin-bottom: 32px;
+    }
+
+    .about-heading .hl { color: var(--c-orange); }
+    .about-heading .hl2 { color: var(--c-yellow); }
+
+    .about-body {
+      font-size: 16px;
+      line-height: 1.85;
+      font-weight: 300;
+      color: rgba(245,240,232,0.72);
+      max-width: 600px;
+    }
+
+    .about-body p + p { margin-top: 20px; }
+
+    .about-body strong {
+      font-weight: 500;
+      color: var(--c-paper);
+    }
+
+    /* Pill stats row */
+    .stats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 44px;
+    }
+
+    .stat-pill {
+      padding: 10px 20px;
+      border: 1.5px solid;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .sp-orange { border-color: var(--c-orange); color: var(--c-orange); }
+    .sp-orange:hover { background: var(--c-orange); color: #0d0d0d; }
+    .sp-yellow { border-color: var(--c-yellow); color: var(--c-yellow); }
+    .sp-yellow:hover { background: var(--c-yellow); color: #0d0d0d; }
+    .sp-teal { border-color: var(--c-teal); color: var(--c-teal); }
+    .sp-teal:hover { background: var(--c-teal); color: #0d0d0d; }
+    .sp-pink { border-color: var(--c-pink); color: var(--c-pink); }
+    .sp-pink:hover { background: var(--c-pink); color: #fff; }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-strip {
+      border-top: 1.5px solid rgba(245,240,232,0.1);
+      border-bottom: 1.5px solid rgba(245,240,232,0.1);
+      padding: 18px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      background: rgba(255,255,255,0.02);
+    }
+
+    .marquee-inner {
+      display: inline-flex;
+      gap: 0;
+      animation: marquee 22s linear infinite;
+    }
+
+    .marquee-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 20px;
+      padding: 0 30px;
+      font-family: var(--font-display);
+      font-size: 22px;
+      letter-spacing: 0.05em;
+      color: rgba(245,240,232,0.25);
+    }
+
+    .marquee-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .md-o { background: var(--c-orange); }
+    .md-y { background: var(--c-yellow); }
+    .md-t { background: var(--c-teal); }
+    .md-p { background: var(--c-pink); }
+
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 8000;
+      display: flex;
+      justify-content: flex-end;
+      gap: 32px;
+      padding: 24px 60px;
+      background: linear-gradient(to bottom, rgba(13,13,13,0.85) 0%, transparent 100%);
+      backdrop-filter: blur(2px);
+    }
+
+    nav a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.5);
+      text-decoration: none;
+      transition: color 0.2s;
+      cursor: none;
+    }
+    nav a:hover, nav a.active { color: var(--c-yellow); }
+
+    /* ── SKILLS SECTION ── */
+    .skills-section {
+      padding: 120px 80px;
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .skills-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 48px;
+      margin-bottom: 72px;
+    }
+
+    .skills-heading {
+      font-family: var(--font-display);
+      font-size: clamp(48px, 6vw, 80px);
+      line-height: 0.95;
+      flex: 1;
+    }
+
+    .skills-heading .hl3 { color: var(--c-teal); }
+    .skills-heading .hl4 { color: var(--c-pink); }
+
+    .skills-intro {
+      flex: 1;
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.8;
+      color: rgba(245,240,232,0.6);
+      padding-top: 12px;
+      max-width: 420px;
+    }
+
+    /* Skill category grid */
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+
+    .skill-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 36px 32px;
+      position: relative;
+      overflow: hidden;
+      transition: background 0.3s, border-color 0.3s;
+      cursor: none;
+    }
+
+    .skill-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+
+    .skill-card:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.15); }
+    .skill-card:hover::before { transform: scaleX(1); }
+
+    .sc-orange::before { background: var(--c-orange); }
+    .sc-yellow::before { background: var(--c-yellow); }
+    .sc-teal::before   { background: var(--c-teal); }
+    .sc-pink::before   { background: var(--c-pink); }
+    .sc-blue::before   { background: var(--c-blue); }
+    .sc-purple::before { background: var(--c-purple); }
+
+    .skill-card-icon {
+      font-size: 28px;
+      margin-bottom: 16px;
+      display: block;
+    }
+
+    .skill-card-title {
+      font-family: var(--font-display);
+      font-size: 26px;
+      letter-spacing: 0.03em;
+      margin-bottom: 12px;
+      color: var(--c-paper);
+    }
+
+    .skill-card-desc {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(245,240,232,0.5);
+      margin-bottom: 20px;
+    }
+
+    /* Skill tags inside card */
+    .skill-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .skill-tag {
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 2px;
+    }
+
+    .st-o { background: rgba(255,92,26,0.15);  color: var(--c-orange); }
+    .st-y { background: rgba(249,232,53,0.15); color: var(--c-yellow); }
+    .st-t { background: rgba(0,200,170,0.15);  color: var(--c-teal); }
+    .st-p { background: rgba(255,61,139,0.15); color: var(--c-pink); }
+    .st-b { background: rgba(26,140,255,0.15); color: var(--c-blue); }
+    .st-v { background: rgba(195,75,255,0.15); color: var(--c-purple); }
+
+    /* Progress bars */
+    .skill-bar-wrap {
+      margin-top: 14px;
+    }
+
+    .skill-bar-label {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: rgba(245,240,232,0.4);
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    .skill-bar-track {
+      height: 3px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 1s cubic-bezier(0.4,0,0.2,1);
+    }
+
+    .skill-bar-fill.animated { transform: scaleX(1); }
+
+    /* ── FOOTER ── */
+    footer {
+      padding: 60px 80px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid rgba(245,240,232,0.08);
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-name {
+      font-family: var(--font-display);
+      font-size: 28px;
+      letter-spacing: 0.05em;
+      color: var(--c-paper);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 28px;
+    }
+
+    .footer-links a {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: rgba(245,240,232,0.45);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--c-yellow); }
+
+    .footer-copy {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: rgba(245,240,232,0.25);
+      letter-spacing: 0.1em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.7); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero { grid-template-columns: 1fr; min-height: auto; }
+      .hero-right { height: 320px; }
+      .hero-left { padding: 48px 28px; }
+      .about { grid-template-columns: 1fr; padding: 64px 28px; gap: 32px; }
+      .section-label { writing-mode: horizontal-tb; transform: none; }
+      footer { padding: 40px 28px; flex-direction: column; align-items: flex-start; }
+      .skills-section { padding: 64px 28px; }
+      .skills-top { flex-direction: column; gap: 20px; margin-bottom: 40px; }
+      .skills-grid { grid-template-columns: 1fr; }
+      nav { padding: 20px 28px; gap: 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cursor" id="cursor"></div>
+
+  <!-- ── NAV ── -->
+  <nav id="sitenav">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section class="hero">
+    <div class="hero-left">
+      <p class="hero-eyebrow">✦ Mechanical Engineer · AI Automation · Freelancer</p>
+      <h1 class="hero-name">
+        Ashraful<span>Alam Mazid</span>
+      </h1>
+      <p class="hero-tagline">
+        A <strong>Mechanical Engineering student</strong> at CUET, Bangladesh — building a freelance career in <strong>AI automation & prompt engineering</strong> to support the people I love.
+      </p>
+      <div class="hero-cta">
+        <a href="#about" class="btn">Learn More ↓</a>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="blob-wrap">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+        <div class="blob blob-4"></div>
+      </div>
+
+      <div class="float-tag ft-1">n8n · Make.com</div>
+      <div class="float-tag ft-2">Prompt Engineer</div>
+      <div class="float-tag ft-3">CUET · 2026</div>
+
+      <div class="avatar-ring">
+        <div class="avatar-inner">AAM</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-strip">
+    <div class="marquee-inner">
+      <!-- Repeated twice for seamless loop -->
+      <span class="marquee-item"><span class="marquee-dot md-o"></span>AI Automation</span>
+      <span class="marquee-item"><span class="marquee-dot md-y"></span>Prompt Engineering</span>
+      <span class="marquee-item"><span class="marquee-dot md-t"></span>n8n</span>
+      <span class="marquee-item"><span class="marquee-dot md-p"></span>Make.com</span>
+      <span class="marquee-item"><span class="marquee-dot md-o"></span>Claude Code</span>
+      <span class="marquee-item"><span class="marquee-dot md-y"></span>Freelancing</span>
+      <span class="marquee-item"><span class="marquee-dot md-t"></span>Mechanical Engineering</span>
+      <span class="marquee-item"><span class="marquee-dot md-p"></span>Upwork · Fiverr</span>
+      <span class="marquee-item"><span class="marquee-dot md-o"></span>AI Automation</span>
+      <span class="marquee-item"><span class="marquee-dot md-y"></span>Prompt Engineering</span>
+      <span class="marquee-item"><span class="marquee-dot md-t"></span>n8n</span>
+      <span class="marquee-item"><span class="marquee-dot md-p"></span>Make.com</span>
+      <span class="marquee-item"><span class="marquee-dot md-o"></span>Claude Code</span>
+      <span class="marquee-item"><span class="marquee-dot md-y"></span>Freelancing</span>
+      <span class="marquee-item"><span class="marquee-dot md-t"></span>Mechanical Engineering</span>
+      <span class="marquee-item"><span class="marquee-dot md-p"></span>Upwork · Fiverr</span>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section class="about" id="about">
+    <div class="section-label">About Me</div>
+    <div class="about-content">
+      <h2 class="about-heading">
+        Driven by<br>
+        <span class="hl">curiosity,</span><br>
+        fueled by<br>
+        <span class="hl2">purpose.</span>
+      </h2>
+      <div class="about-body">
+        <p>
+          I'm a <strong>Mechanical Engineering student</strong> at Chittagong University of Engineering and Technology (CUET), Bangladesh — beginning campus life in mid-2026. But I'm not waiting for lectures to start learning.
+        </p>
+        <p>
+          Right now, I'm on a mission: mastering <strong>AI automation and prompt engineering</strong> to build a freelance career on international platforms like Upwork and Fiverr. Every day is a structured sprint — learning n8n, Make.com, Claude Code, Python, and vibe coding, while keeping up with engineering fundamentals.
+        </p>
+        <p>
+          My motivation runs deeper than career ambition. I'm building skills to <strong>support my family</strong> — and that makes every late-night study session worth it. I move with intention, track my progress day by day, and believe that consistency beats talent every time.
+        </p>
+      </div>
+      <div class="stats-row">
+        <div class="stat-pill sp-orange">🤖 AI Automation</div>
+        <div class="stat-pill sp-yellow">✍️ Prompt Engineering</div>
+        <div class="stat-pill sp-teal">⚙️ Mechanical Eng.</div>
+        <div class="stat-pill sp-pink">🌐 Freelancer</div>
+        <div class="stat-pill sp-orange">🏫 CUET · Bangladesh</div>
+        <div class="stat-pill sp-teal">📅 60-Day Learning Plan</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS ── -->
+  <section class="skills-section" id="skills">
+    <div class="skills-top">
+      <h2 class="skills-heading">
+        What I'm<br>
+        <span class="hl3">building</span><br>
+        & <span class="hl4">learning.</span>
+      </h2>
+      <p class="skills-intro">
+        I'm on a structured 60-day sprint across three tracks — AI automation, mechanical engineering fundamentals, and English communication. Every tool I pick up is chosen with one purpose: becoming freelance-ready on the global stage.
+      </p>
+    </div>
+
+    <div class="skills-grid">
+
+      <!-- Card 1 -->
+      <div class="skill-card sc-orange reveal-skill">
+        <span class="skill-card-icon">🤖</span>
+        <div class="skill-card-title">Prompt Engineering</div>
+        <p class="skill-card-desc">Designing precise, powerful prompts for AI models — the foundation of every automation and product I build.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-o">Role · Context · Task</span>
+          <span class="skill-tag st-o">Few-shot</span>
+          <span class="skill-tag st-o">Chain-of-thought</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>Learning</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:65%; background:var(--c-orange);"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="skill-card sc-teal reveal-skill">
+        <span class="skill-card-icon">⚡</span>
+        <div class="skill-card-title">AI Automation</div>
+        <p class="skill-card-desc">Building no-code and low-code workflows that connect apps, automate repetitive tasks, and deliver real business value.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-t">n8n</span>
+          <span class="skill-tag st-t">Make.com</span>
+          <span class="skill-tag st-t">Zapier</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>In Progress</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:45%; background:var(--c-teal);"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="skill-card sc-purple reveal-skill">
+        <span class="skill-card-icon">💻</span>
+        <div class="skill-card-title">Vibe Coding</div>
+        <p class="skill-card-desc">Using AI-assisted coding (Claude Code, Cursor) to build real products — fast, iterative, and without needing to memorize every syntax.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-v">Claude Code</span>
+          <span class="skill-tag st-v">Python</span>
+          <span class="skill-tag st-v">Cursor</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>Upcoming</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:30%; background:var(--c-purple);"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="skill-card sc-yellow reveal-skill">
+        <span class="skill-card-icon">⚙️</span>
+        <div class="skill-card-title">Mechanical Eng.</div>
+        <p class="skill-card-desc">Core fundamentals for CUET — calculus, engineering mechanics, differential equations, and engineering drawing.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-y">Calculus</span>
+          <span class="skill-tag st-y">Mechanics</span>
+          <span class="skill-tag st-y">Diff. Equations</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>Refreshing</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:55%; background:var(--c-yellow);"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="skill-card sc-pink reveal-skill">
+        <span class="skill-card-icon">🌐</span>
+        <div class="skill-card-title">Freelancing</div>
+        <p class="skill-card-desc">Positioning and landing clients on Upwork and Fiverr — writing proposals, building a portfolio, and delivering international-grade work.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-p">Upwork</span>
+          <span class="skill-tag st-p">Fiverr</span>
+          <span class="skill-tag st-p">Proposals</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>Launching Soon</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:20%; background:var(--c-pink);"></div></div>
+        </div>
+      </div>
+
+      <!-- Card 6 -->
+      <div class="skill-card sc-blue reveal-skill">
+        <span class="skill-card-icon">🗣️</span>
+        <div class="skill-card-title">English Comm.</div>
+        <p class="skill-card-desc">Sharpening professional written and spoken English to communicate confidently with international clients and collaborators.</p>
+        <div class="skill-tags">
+          <span class="skill-tag st-b">Writing</span>
+          <span class="skill-tag st-b">Speaking</span>
+          <span class="skill-tag st-b">Client Comms</span>
+        </div>
+        <div class="skill-bar-wrap">
+          <div class="skill-bar-label"><span>Proficiency</span><span>Active</span></div>
+          <div class="skill-bar-track"><div class="skill-bar-fill" style="width:60%; background:var(--c-blue);"></div></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-name">Md. Ashraful Alam Mazid</div>
+    <div class="footer-links">
+      <a href="#">Upwork</a>
+      <a href="#">Fiverr</a>
+      <a href="#">GitHub</a>
+      <a href="#">Email</a>
+    </div>
+    <div class="footer-copy">© 2026 · Md. Ashraful Alam Mazid · Built with purpose</div>
+  </footer>
+
+  <script>
+    // Cursor
+    const cursor = document.getElementById('cursor');
+    document.addEventListener('mousemove', e => {
+      cursor.style.left = e.clientX - 8 + 'px';
+      cursor.style.top  = e.clientY - 8 + 'px';
+    });
+    document.querySelectorAll('a, button, .btn, .stat-pill, .skill-card').forEach(el => {
+      el.addEventListener('mouseenter', () => cursor.classList.add('grow'));
+      el.addEventListener('mouseleave', () => cursor.classList.remove('grow'));
+    });
+
+    // Scroll reveal — about section
+    const revealObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) e.target.style.animation = 'fadeUp 0.8s ease forwards';
+      });
+    }, { threshold: 0.15 });
+
+    document.querySelectorAll('.about-heading, .about-body, .stats-row').forEach(el => {
+      el.style.opacity = '0';
+      revealObs.observe(el);
+    });
+
+    // Scroll reveal — skill cards (staggered)
+    const skillObs = new IntersectionObserver(entries => {
+      entries.forEach((e, i) => {
+        if (e.isIntersecting) {
+          const delay = Array.from(document.querySelectorAll('.reveal-skill')).indexOf(e.target) * 90;
+          e.target.style.animation = `fadeUp 0.7s ease ${delay}ms forwards`;
+          // Animate progress bars
+          const bars = e.target.querySelectorAll('.skill-bar-fill');
+          setTimeout(() => bars.forEach(b => b.classList.add('animated')), delay + 300);
+          skillObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal-skill').forEach(el => {
+      el.style.opacity = '0';
+      skillObs.observe(el);
+    });
+
+    // Skills heading reveal
+    const headingObs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.animation = 'fadeUp 0.8s ease forwards';
+          headingObs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.2 });
+
+    document.querySelectorAll('.skills-heading, .skills-intro').forEach(el => {
+      el.style.opacity = '0';
+      headingObs.observe(el);
+    });
+
+    // Active nav link on scroll
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('nav a');
+    window.addEventListener('scroll', () => {
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 200) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+  </script>
+</body>
+</html>
+
